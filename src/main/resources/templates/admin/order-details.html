@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="layout :: layout (~{::body})">
+
+<body>
+
+<h2 class="fw-bold mb-4">Order Details</h2>
+
+<h4>User: <span th:text="${order.user.email}"></span></h4>
+<h4>Total: <span th:text="${order.totalAmount}"></span></h4>
+<h4>Status: <span th:text="${order.status}"></span></h4>
+<hr>
+
+<table class="table table-bordered">
+    <thead>
+    <tr>
+        <th>Product</th>
+        <th>Qty</th>
+        <th>Price</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    <tr th:each="i : ${order.items}">
+        <td th:text="${i.product.name}"></td>
+        <td th:text="${i.quantity}"></td>
+        <td th:text="${i.price}"></td>
+    </tr>
+    </tbody>
+</table>
+
+<a th:href="@{/admin/orders}" class="btn btn-secondary">Back</a>
+
+</body>
+</html>

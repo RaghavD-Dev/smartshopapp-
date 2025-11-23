@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="layout :: layout(~{::body})">
+<body class="bg-light">
+
+<!-- INLINE STYLES FOR CUSTOM UI -->
+<style>
+    /* HERO BANNER */
+    .hero-banner {
+        background: linear-gradient(135deg, #4facfe, #00f2fe);
+        border-radius: 20px;
+        padding: 40px;
+        color: white;
+        box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+    }
+    .hero-text h2 {
+        font-size: 32px;
+        font-weight: 700;
+    }
+    .hero-btn {
+        background: #fff;
+        color: #000;
+        font-weight: 600;
+        padding: 6px 16px;
+        border-radius: 10px;
+    }
+    .hero-btn:hover {
+        background: #f1f1f1;
+    }
+
+    /* CATEGORY STRIP */
+    .category-strip {
+        display: flex;
+        gap: 12px;
+        overflow-x: auto;
+        padding: 10px 2px;
+    }
+    .category-pill {
+        background: rgba(255,255,255,0.65);
+        backdrop-filter: blur(8px);
+        border-radius: 25px;
+        padding: 8px 18px;
+        font-size: 14px;
+        font-weight: 600;
+        white-space: nowrap;
+        box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+        cursor: pointer;
+        transition: 0.25s;
+    }
+    .category-pill:hover {
+        transform: translateY(-3px);
+        background: #ffffff;
+    }
+
+    /* PRODUCT CARD */
+    .product-card {
+        background: white;
+        border-radius: 20px;
+        padding: 15px;
+        transition: 0.25s ease;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    }
+    .product-card:hover {
+        transform: translateY(-6px);
+        box-shadow: 0 15px 35px rgba(0,0,0,0.12);
+    }
+    .product-img-wrapper {
+        position: relative;
+        border-radius: 15px;
+        overflow: hidden;
+    }
+    .product-img {
+        width: 100%;
+        height: 200px;
+        object-fit: cover;
+        transition: 0.25s;
+    }
+    .product-card:hover .product-img {
+        transform: scale(1.07);
+    }
+    .eco-badge, .trending-badge {
+        position: absolute;
+        top: 10px;
+        left: 10px;
+        padding: 5px 10px;
+        font-size: 12px;
+        font-weight: 600;
+        border-radius: 12px;
+        color: white;
+    }
+    .eco-badge { background: #28a745; }
+    .trending-badge { background: #ff5722; }
+
+    .product-body {
+        padding-top: 12px;
+    }
+    .product-name {
+        font-size: 17px;
+        font-weight: 700;
+        min-height: 40px;
+    }
+    .old-price {
+        text-decoration: line-through;
+        color: #888;
+        margin-right: 4px;
+    }
+    .new-price {
+        color: #004aad;
+        font-size: 20px;
+        font-weight: 700;
+    }
+    .discount-tag {
+        background: #ffe6e6;
+        color: #d00000;
+        padding: 2px 8px;
+        border-radius: 8px;
+        font-size: 11px;
+        margin-left: 5px;
+        font-weight: 600;
+    }
+</style>
+
+<!-- HERO BANNER -->
+<div class="row mb-4">
+    <div class="col-12">
+        <div class="hero-banner d-flex flex-column flex-md-row align-items-center">
+
+            <div class="hero-text flex-grow-1">
+                <h2>Big Savings on Top Picks 🔥</h2>
+                <p class="mb-3">Discover trending gadgets, fashion & lifestyle products at smart prices.</p>
+                <a th:href="@{/}" class="btn hero-btn btn-sm">Shop Now</a>
+            </div>
+
+            <div class="hero-image mt-3 mt-md-0 d-none d-md-block">
+                <img src="https://images.unsplash.com/photo-1523275335684-37898b6baf30?q=80&w=600"
+                     alt="Shopping" class="img-fluid rounded-4" style="max-width: 320px;">
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<!-- CATEGORY STRIP -->
+<div class="category-strip mb-4">
+    <span class="category-pill">Electronics</span>
+    <span class="category-pill">Fashion</span>
+    <span class="category-pill">Home & Kitchen</span>
+    <span class="category-pill">Mobiles</span>
+    <span class="category-pill">Accessories</span>
+    <span class="category-pill">More</span>
+</div>
+
+<!-- PRODUCT GRID -->
+<h4 class="section-title mb-3 fw-bold">Featured Products</h4>
+
+<div class="row g-4">
+    <div class="col-6 col-md-4 col-lg-3" th:each="p : ${products}">
+        <div class="product-card h-100">
+
+            <!-- PRODUCT IMAGE -->
+            <div class="product-img-wrapper">
+                <img th:src="${p.imageUrl}" alt="Product" class="product-img">
+
+                <span class="badge eco-badge" th:if="${p.ecoFriendly}">Eco</span>
+                <span class="badge trending-badge" th:if="${p.trending}">Hot</span>
+            </div>
+
+            <!-- PRODUCT BODY -->
+            <div class="product-body">
+
+                <div class="product-name" th:text="${p.name}"></div>
+
+                <div class="product-category text-muted small"
+                     th:text="${p.category}">
+                </div>
+
+                <p class="product-desc text-muted small mb-1"
+                   th:text="${#strings.abbreviate(p.description, 65)}"></p>
+
+                <div class="price-row mt-2">
+                    <span th:if="${p.discountPrice != null}">
+                        <span class="old-price" th:text="'₹' + ${p.price}"></span>
+                        <span class="new-price" th:text="'₹' + ${p.discountPrice}"></span>
+                        <span class="discount-tag">Best Deal</span>
+                    </span>
+
+                    <span th:if="${p.discountPrice == null}">
+                        <span class="new-price" th:text="'₹' + ${p.price}"></span>
+                    </span>
+                </div>
+
+                <!-- ACTION BUTTONS -->
+                <div class="d-grid gap-2 mt-3">
+
+                    <form th:action="@{/cart/add}" method="post">
+                        <input type="hidden" name="productId" th:value="${p.id}">
+                        <button class="btn btn-primary btn-sm rounded-pill">
+                            <i class="bi bi-cart-plus me-1"></i> Add to Cart
+                        </button>
+                    </form>
+
+                    <form th:action="@{/wishlist/add}" method="post">
+                        <input type="hidden" name="productId" th:value="${p.id}">
+                        <button class="btn btn-outline-secondary btn-sm rounded-pill">
+                            <i class="bi bi-heart"></i> Wishlist
+                        </button>
+                    </form>
+
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

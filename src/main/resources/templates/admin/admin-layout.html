@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{admin/admin-layout.html :: layout(~{::body})}">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Admin Panel • SmartShop</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        body { background: #f4f6f9; }
+
+        .sidebar {
+            width: 250px;
+            height: 100vh;
+            background: #1e1e2d;
+            position: fixed;
+            padding-top: 30px;
+        }
+        .sidebar a {
+            color: #c5c7cd;
+            padding: 12px 25px;
+            display: block;
+            font-size: 16px;
+            text-decoration: none;
+        }
+        .sidebar a:hover {
+            background: #252536;
+            color: #fff;
+        }
+        .main-content {
+            margin-left: 270px;
+            padding: 20px;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="sidebar">
+    <h4 class="text-white text-center mb-4">Admin Panel</h4>
+    <a th:href="@{/admin/dashboard}">📊 Dashboard</a>
+    <a th:href="@{/admin/products}">🛍 Products</a>
+    <a th:href="@{/admin/categories}">📂 Categories</a>
+    <a th:href="@{/admin/orders}">📦 Orders</a>
+    <a th:href="@{/logout}">🚪 Logout</a>
+</div>
+
+<div class="main-content" th:insert="~{::body}">
+</div>
+
+</body>
+</html>

@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="admin-layout :: layout(~{::body})">
+
+<body>
+
+<div class="container py-4">
+
+    <h2 class="fw-bold mb-3"
+        th:text="${product.id == null ? 'Add New Product' : 'Edit Product'}"></h2>
+
+    <p class="text-muted mb-4 small">
+        Fill in the details below to manage your store's products.
+    </p>
+
+    <div class="summary-card p-4">
+
+        <form th:action="@{/admin/products/save}"
+              th:object="${product}"
+              method="post"
+              enctype="multipart/form-data">
+
+            <!-- Hidden ID -->
+            <input type="hidden" th:field="*{id}"/>
+
+            <div class="row g-3">
+
+                <!-- Name -->
+                <div class="col-md-6">
+                    <label class="form-label small fw-semibold">Product Name</label>
+                    <input th:field="*{name}" class="form-control" required>
+                </div>
+
+                <!-- Price -->
+                <div class="col-md-3">
+                    <label class="form-label small fw-semibold">Price (₹)</label>
+                    <input th:field="*{price}" type="number" step="0.01"
+                           class="form-control" required>
+                </div>
+
+                <!-- Discount -->
+                <div class="col-md-3">
+                    <label class="form-label small fw-semibold">Discount Price (₹)</label>
+                    <input th:field="*{discountPrice}" type="number" step="0.01"
+                           class="form-control">
+                </div>
+
+                <!-- Category -->
+                <div class="col-md-6">
+                    <label class="form-label small fw-semibold">Category</label>
+                    <select name="categoryId" class="form-select" required>
+                        <option value="">-- Select Category --</option>
+
+                        <option th:each="c : ${categories}"
+                                th:value="${c.id}"
+                                th:text="${c.name}"
+                                th:selected="${product.category != null and product.category.id == c.id}">
+                        </option>
+                    </select>
+                </div>
+
+                <!-- Image Upload -->
+                <div class="col-md-6">
+                    <label class="form-label small fw-semibold">Product Image</label>
+                    <input type="file" name="imageFile" class="form-control">
+                    <img th:if="${product.imageUrl}"
+                         th:src="${product.imageUrl}"
+                         class="mt-2 rounded"
+                         style="height: 80px;">
+                </div>
+
+                <!-- Description -->
+                <div class="col-12">
+                    <label class="form-label small fw-semibold">Description</label>
+                    <textarea th:field="*{description}" rows="3" class="form-control"></textarea>
+                </div>
+
+                <!-- Flags -->
+                <div class="col-md-6">
+                    <label class="form-label small fw-semibold">Trending</label>
+                    <br>
+                    <input type="checkbox" th:field="*{trending}">
+                </div>
+
+                <div class="col-md-6">
+                    <label class="form-label small fw-semibold">Eco Friendly</label>
+                    <br>
+                    <input type="checkbox" th:field="*{ecoFriendly}">
+                </div>
+
+            </div>
+
+            <button class="btn btn-primary w-100 mt-4">
+                Save Product
+            </button>
+
+        </form>
+
+    </div>
+
+</div>
+
+</body>
+</html>

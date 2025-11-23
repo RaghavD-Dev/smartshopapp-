@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="admin-layout :: layout(~{::body})">
+
+<body>
+
+<div class="container py-4">
+
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h2 class="fw-bold">Manage Products</h2>
+        <a class="btn btn-primary" th:href="@{/admin/products/add}">
+            <i class="bi bi-plus-circle me-1"></i> Add New Product
+        </a>
+    </div>
+
+    <div class="summary-card p-3">
+
+        <table class="table align-middle">
+            <thead class="table-light">
+                <tr>
+                    <th>Name</th>
+                    <th>Category</th>
+                    <th>Price (₹)</th>
+                    <th>Discount (₹)</th>
+                    <th>Trending</th>
+                    <th>Eco</th>
+                    <th>Image</th>
+                    <th class="text-end">Actions</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                <tr th:each="p : ${products}">
+                    <td th:text="${p.name}"></td>
+
+                    <!-- Category is string; display directly -->
+                    <td th:text="${p.category}"></td>
+
+                    <td th:text="${p.price}"></td>
+                    <td th:text="${p.discountPrice}"></td>
+
+                    <td>
+                        <span class="badge bg-primary" th:if="${p.trending}">Yes</span>
+                        <span class="badge bg-secondary" th:unless="${p.trending}">No</span>
+                    </td>
+
+                    <td>
+                        <span class="badge bg-success" th:if="${p.ecoFriendly}">Yes</span>
+                        <span class="badge bg-secondary" th:unless="${p.ecoFriendly}">No</span>
+                    </td>
+
+                    <td>
+                        <img th:src="${p.imageUrl}" class="rounded" style="height:55px;">
+                    </td>
+
+                    <!-- ACTIONS -->
+                    <td class="text-end">
+                        <a th:href="@{/admin/products/edit/{id}(id=${p.id})}"
+                           class="btn btn-outline-primary btn-sm me-1">
+                            Edit
+                        </a>
+
+                        <a th:href="@{/admin/products/delete/{id}(id=${p.id})}"
+                           onclick="return confirm('Delete this product?');"
+                           class="btn btn-outline-danger btn-sm">
+                            Delete
+                        </a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+    </div>
+
+</div>
+
+</body>
+</html>

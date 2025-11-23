@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="layout :: layout(~{::body})">
+<body>
+
+<h4 class="section-title mb-3">Checkout</h4>
+
+<div class="row g-4">
+    <div class="col-md-7">
+        <div class="checkout-card">
+            <h6 class="mb-3">Delivery Details</h6>
+
+            <div class="mb-3">
+                <label class="form-label">Full Address</label>
+                <textarea class="form-control" rows="3"
+                          placeholder="House no, Street, City, Pincode"></textarea>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Order Notes (optional)</label>
+                <form th:action="@{/checkout}" method="post">
+                    <textarea class="form-control mb-3" name="orderNotes" rows="3"
+                              placeholder="Example: Birthday gift, urgent delivery, etc."></textarea>
+                    <button class="btn btn-success">Place Order</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-5">
+        <div class="summary-card">
+            <h6 class="mb-3">Order Summary</h6>
+            <p class="small text-muted mb-0">
+                Items and exact total are based on your current cart.
+            </p>
+            <a th:href="@{/cart}" class="btn btn-link btn-sm ps-0 mt-2">View Cart</a>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

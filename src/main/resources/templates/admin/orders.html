@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="layout :: layout (~{::body})">
+
+<body>
+
+<h2 class="fw-bold mb-4">Manage Orders</h2>
+
+<table class="table table-bordered table-striped">
+    <thead class="table-dark">
+        <tr>
+            <th>ID</th>
+            <th>User</th>
+            <th>Total</th>
+            <th>Status</th>
+            <th>Date</th>
+            <th style="width:150px;">Actions</th>
+        </tr>
+    </thead>
+
+    <tbody>
+    <tr th:each="o : ${orders}">
+        <td th:text="${o.id}"></td>
+        <td th:text="${o.user.email}"></td>
+        <td th:text="${o.totalAmount}"></td>
+        <td th:text="${o.status}"></td>
+        <td th:text="${o.createdAt}"></td>
+
+        <td>
+            <a th:href="@{/admin/orders/view/{id}(id=${o.id})}" class="btn btn-info btn-sm">View</a>
+            <a th:href="@{/admin/orders/delete/{id}(id=${o.id})}"
+               onclick="return confirm('Delete order?');"
+               class="btn btn-danger btn-sm">Delete</a>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+</body>
+</html>
+>

@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="admin/admin-layout :: layout(~{::body})">
+<body>
+
+<h2 class="fw-bold mb-3">Manage Categories</h2>
+
+<form th:action="@{/admin/categories/save}" method="post" class="mb-3">
+    <div class="input-group">
+        <input type="text" name="name" class="form-control" placeholder="New category name" required>
+        <button class="btn btn-primary">Add</button>
+    </div>
+</form>
+
+<table class="table table-bordered">
+    <thead>
+    <tr>
+        <th>Name</th>
+        <th style="width: 120px;">Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="c : ${categories}">
+        <td th:text="${c.name}"></td>
+        <td>
+            <a th:href="@{'/admin/categories/delete/' + ${c.id}}"
+               onclick="return confirm('Delete category?')"
+               class="btn btn-danger btn-sm">Delete</a>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+</body>
+</html>
